@@ -71,8 +71,16 @@ if DEBUG:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+    CACHES={
+        'default':{
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        },
+        'token-cache':{
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        },
+    }
 else:
-    # Set a database connection
+    # Set a database connection and cache
     pass
 
 # Set your customized REST_FRAMEWORK settings
@@ -116,5 +124,6 @@ AUTH_USER_MODEL = 'sha_accounts.User'
 SHA_ACCOUNTS = {
     'DEFAULT_ACTIVATION': True,
     'AUTH_USER_MODEL': 'User',
-    'JWT_ACCESS_TOKEN_EXP':timedelta(days=1)
+    'JWT_ACCESS_TOKEN_EXP':timedelta(days=1),
+    'JWT_USER_ENCODED_FIELDS':['id','is_active']
 }
