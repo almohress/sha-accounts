@@ -7,7 +7,7 @@ class UserModelTestCase(TestCase):
         pass
 
     def test_create_normal_user(self):
-        normal_user = User.objects.create_user(
+        normal_user = User.objects.create(
             username='normal', email='normal@example.com', password='normal')
         self.assertIsNotNone(normal_user)
         self.assertIsNotNone(normal_user.permissions.all())
