@@ -27,10 +27,10 @@ class UserSignUpRequest(serializers.ModelSerializer):
 
 class UserSignUpResponse(WritableNestedModelSerializer):
     profile = ProfileSerializer()
-
+    access_token=serializers.CharField()
     class Meta:
         model = User
-        fields = ['username', 'email', 'is_active', 'profile']
+        fields = ['username', 'email', 'is_active', 'profile', 'access_token']
 
 
 class UserSignInRequest(serializers.ModelSerializer):
@@ -47,7 +47,7 @@ class UserSignInRequest(serializers.ModelSerializer):
         try:
             user = self.Meta.model.objects.get(username=username)
             if user.check_password(password):
-                pass
+                return user
             else:
                 raise DoesNotExistsExp(f'Invalid Credentials')
         except ObjectDoesNotExist as e:
