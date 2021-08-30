@@ -105,4 +105,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SHA_ACCOUNTS = {}
+SHA_ACCOUNTS = {
+    'DEFAULT_ACTIVATION': True,
+    'AUTH_USER_MODEL':'User'
+}
