@@ -10,11 +10,8 @@ DEBUG = getenv('DJANGO_DEBUG', True)
 ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
 
 DJANGO_DEFAULT_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
 ]
 
 DEBUG_APPS = [
@@ -27,7 +24,7 @@ THIRD_PARTIES = [
 ]
 
 LOCAL_APPS = [
-
+    'sha_accounts',
 ]
 
 INSTALLED_APPS = DJANGO_DEFAULT_APPS+THIRD_PARTIES+LOCAL_APPS
