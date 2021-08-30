@@ -1,5 +1,7 @@
 from pathlib import Path
 from os import getenv
+from datetime import timedelta
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -113,5 +115,6 @@ AUTH_USER_MODEL = 'sha_accounts.User'
 
 SHA_ACCOUNTS = {
     'DEFAULT_ACTIVATION': True,
-    'AUTH_USER_MODEL': 'User'
+    'AUTH_USER_MODEL': 'User',
+    'JWT_ACCESS_TOKEN_EXP':timedelta(days=1)
 }
