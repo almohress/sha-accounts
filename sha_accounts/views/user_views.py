@@ -6,6 +6,7 @@ from djrest_wrapper.decorators import serializer_validation
 from ..models.user_models import User
 from ..signals import user_logged_in
 from ..serializers.user_serializers import UserSignUpRequest, UserSignUpResponse, UserSignInRequest, UserSignInResponse
+from ..permissions import IsAuthenticatedAndOwner
 
 
 class UserViewSet(BaseViewSet):
@@ -23,21 +24,24 @@ class UserViewSet(BaseViewSet):
             'res': UserSignInResponse,
         }
     }
+    permission_action_classes = {
+        'retrieve': [IsAuthenticatedAndOwner],
+    }
 
     @serializer_validation
     def create(self, request, *args, **kwargs):
         reqser = self.get_serializer(data=request.data)
         reqser.is_valid(raise_exception=True)
         model = self.perform_create(reqser)
-        model.access_token=user_logged_in.send(sender=User,user=model)[0][1]
+        model.access_token = user_logged_in.send(sender=User, user=model)[0][1]
         resser = self.get_serializer_response()(model)
         return Response(data={model.__class__.__name__.lower(): resser.data}, status=HTTP_201_CREATED)
 
-    @action(detail=False,methods=['POST'],url_name='signin',url_path='signin')
-    def signin(self,request,*args,**kwargs):
-        reqser=self.get_serializer(data=request.data)
+    @action(detail=False, methods=['POST'], url_name='signin', url_path='signin')
+    def signin(self, request, *args, **kwargs):
+        reqser = self.get_serializer(data=request.data)
         reqser.is_valid(raise_exception=True)
-        user=reqser.login()
-        user.access_token=user_logged_in.send(sender=User,user=user)[0][1]
-        resser=self.get_serializer_response()(user)
+        user = reqser.login()
+        user.access_token = user_logged_in.send(sender=User, user=user)[0][1]
+        resser = self.get_serializer_response()(user)
         return Response(data={user.__class__.__name__.lower(): resser.data})
