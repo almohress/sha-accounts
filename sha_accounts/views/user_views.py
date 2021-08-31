@@ -6,7 +6,7 @@ from djrest_wrapper.decorators import serializer_validation
 from ..models.user_models import User
 from ..signals import user_logged_in
 from ..serializers.user_serializers import UserSignUpRequest, UserSignUpResponse, UserSignInRequest, UserSignInResponse
-from ..permissions import IsAuthenticatedAndOwner
+from ..permissions import IsAuthenticatedAndOwner, IsAdmin
 
 
 class UserViewSet(BaseViewSet):
@@ -25,7 +25,7 @@ class UserViewSet(BaseViewSet):
         }
     }
     permission_action_classes = {
-        'retrieve': [IsAuthenticatedAndOwner],
+        'retrieve': [IsAuthenticatedAndOwner | IsAdmin],
     }
 
     @serializer_validation
