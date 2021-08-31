@@ -25,10 +25,11 @@ class AbstractUser(AbstractBaseUser, BaseModel):
         verbose_name='Email Address', max_length=254, unique=True)
     is_active = models.BooleanField(
         default=settings.SHA_ACCOUNTS.get('DEFAULT_ACTIVATION', True))
+    is_superuser = models.BooleanField(_('superuser status'), default=False)
 
     USERNAME_FIELD = 'username'
     # email and password are required by default
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email']
 
     objects = UserManager()
 

@@ -19,11 +19,6 @@ class UserSignUpRequest(serializers.ModelSerializer):
         model = User
         fields = ['username', 'email', 'password']
 
-    def create(self, validated_data):
-        validated_data['password'] = make_password(
-            validated_data.get('password'))
-        return super().create(validated_data)
-
 
 class UserSignUpResponse(WritableNestedModelSerializer):
     profile = ProfileSerializer()
@@ -32,7 +27,7 @@ class UserSignUpResponse(WritableNestedModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email',
-                  'is_active', 'profile', 'access_token']
+                  'is_active', 'is_superuser', 'profile', 'access_token']
 
 
 class UserSignInRequest(serializers.ModelSerializer):
