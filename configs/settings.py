@@ -71,11 +71,11 @@ if DEBUG:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-    CACHES={
-        'default':{
+    CACHES = {
+        'default': {
             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         },
-        'token-cache':{
+        'token-cache': {
             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         },
     }
@@ -88,6 +88,7 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'djrest_wrapper.exceptions.handler.exception_handler',
     'DEFAULT_RENDERER_CLASSES': ['djrest_wrapper.renderers.defaultjson.DefaultJsonRenderer'],
     'DEFAULT_PAGINATION_CLASS': 'djrest_wrapper.paginations.default.DefaultPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': ['sha_accounts.backends.authentications.JwtAuthentication', ]
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -124,6 +125,7 @@ AUTH_USER_MODEL = 'sha_accounts.User'
 SHA_ACCOUNTS = {
     'DEFAULT_ACTIVATION': True,
     'AUTH_USER_MODEL': 'User',
-    'JWT_ACCESS_TOKEN_EXP':timedelta(days=1),
-    'JWT_USER_ENCODED_FIELDS':['id','is_active']
+    'JWT_ACCESS_TOKEN_EXP': timedelta(days=1),
+    'JWT_USER_ENCODED_FIELDS': ['id'],
+    'JWT_AUTH_RAELM': 'sample_raelm'
 }
