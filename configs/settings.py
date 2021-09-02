@@ -2,7 +2,6 @@ from pathlib import Path
 from os import getenv
 from datetime import timedelta
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = getenv('DJANGO_SECRET_KEY')
@@ -119,6 +118,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 AUTH_USER_MODEL = 'sha_accounts.User'
 
