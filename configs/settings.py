@@ -1,5 +1,6 @@
 from pathlib import Path
 from os import getenv
+from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -10,11 +11,8 @@ DEBUG = getenv('DJANGO_DEBUG', True)
 ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
 
 DJANGO_DEFAULT_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
 ]
 
 DEBUG_APPS = [
@@ -27,7 +25,7 @@ THIRD_PARTIES = [
 ]
 
 LOCAL_APPS = [
-
+    'sha_accounts',
 ]
 
 INSTALLED_APPS = DJANGO_DEFAULT_APPS+THIRD_PARTIES+LOCAL_APPS
@@ -72,12 +70,25 @@ if DEBUG:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        },
+        'token-cache': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        },
+    }
 else:
-    # Set a database connection
+    # Set a database connection and cache
     pass
 
 # Set your customized REST_FRAMEWORK settings
-# REST_FRAMEWORK = {}
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'djrest_wrapper.exceptions.handler.exception_handler',
+    'DEFAULT_RENDERER_CLASSES': ['djrest_wrapper.renderers.defaultjson.DefaultJsonRenderer'],
+    'DEFAULT_PAGINATION_CLASS': 'djrest_wrapper.paginations.default.DefaultPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': ['sha_accounts.backends.authentications.JwtAuthentication', ]
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -108,4 +119,13 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SHA_ACCOUNTS = {}
+
+AUTH_USER_MODEL = 'sha_accounts.User'
+
+SHA_ACCOUNTS = {
+    'DEFAULT_ACTIVATION': True,
+    'AUTH_USER_MODEL': 'User',
+    'JWT_ACCESS_TOKEN_EXP': timedelta(days=1),
+    'JWT_USER_ENCODED_FIELDS': ['id'],
+    'JWT_AUTH_RAELM': 'sample_raelm'
+}
