@@ -5,7 +5,7 @@ from djrest_wrapper.interfaces import BaseViewSet
 from djrest_wrapper.decorators import serializer_validation
 from ..models.user_models import User
 from ..signals import user_logged_in
-from ..serializers.user_serializers import UserSignUpRequest, UserSignUpResponse, UserSignInRequest, UserSignInResponse, UserListResponse
+from ..serializers.user_serializers import UserSignUpRequest, UserSignUpResponse, UserSignInRequest, UserSignInResponse, UserListResponse, UserUpdateRequest, UserUpdateResponse
 from ..permissions import IsAuthenticatedAndOwner, IsAdmin
 
 
@@ -27,9 +27,19 @@ class UserViewSet(BaseViewSet):
         'list':{
             'res':UserListResponse,
         },
+        'update':{
+            'req': UserUpdateRequest,
+            'res': UserUpdateResponse,
+        },
+        'partial_update':{
+            'req': UserUpdateRequest,
+            'res': UserUpdateResponse,
+        },
     }
     permission_action_classes = {
         'retrieve': [IsAuthenticatedAndOwner | IsAdmin],
+        'update': [IsAuthenticatedAndOwner | IsAdmin],
+        'partial_update': [IsAuthenticatedAndOwner | IsAdmin],
         'list': [IsAdmin],
     }
 

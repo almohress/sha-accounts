@@ -111,3 +111,48 @@ class UserViewSetTestCase(APITestCase):
             'err_code'), errors.ERR_SUCCESSFUL)
         self.assertIsNotNone(response.json().get('data').get('page'))
         self.assertIsNotNone(response.json().get('data').get('users'))
+
+    def test_user_update_profile_put_view(self):
+        user=User.objects.create(username=f'test',email=f'test@example.com',password=f'test')
+        access_token=self._login('test','test').get('data').get('user').get('access_token')
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'{settings.SHA_ACCOUNTS.get("JWT_AUTH_RAELM")} {access_token}')
+        url=reverse('user-detail',args={user.id})
+        data={
+            'profile':{
+                'first_name':'ali',
+            },
+        }
+        response=self.client.put(path=url,data=data,format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json().get('err'), False)
+        self.assertEqual(response.json().get(
+            'err_code'), errors.ERR_SUCCESSFUL)
+        self.assertEqual(response.json().get('data').get('user').get('profile').get('first_name'),data.get('profile').get('first_name'))
+    
+    def test_user_update_profile_patch_view(self):
+        user=User.objects.create(username=f'test',email=f'test@example.com',password=f'test')
+        access_token=self._login('test','test').get('data').get('user').get('access_token')
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'{settings.SHA_ACCOUNTS.get("JWT_AUTH_RAELM")} {access_token}')
+        url=reverse('user-detail',args={user.id})
+        data={
+            'profile':{
+                'first_name':'ali',
+            },
+        }
+        response=self.client.patch(path=url,data=data,format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json().get('err'), False)
+        self.assertEqual(response.json().get(
+            'err_code'), errors.ERR_SUCCESSFUL)
+        self.assertEqual(response.json().get('data').get('user').get('profile').get('first_name'),data.get('profile').get('first_name'))
+
+    def _login(self,username,password):
+        data={
+            'username':username,
+            'password':password
+        }
+        url=reverse('user-signin')
+        response = self.client.post(path=url, data=data, format='json')
+        return response.json()
