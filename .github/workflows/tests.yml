@@ -5,9 +5,9 @@ name: Run Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -29,5 +29,7 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements-devel.txt ]; then pip install -r requirements-devel.txt; fi
     - name: Test with manage.py
+      env:
+        DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
       run: |
         python manage.py test

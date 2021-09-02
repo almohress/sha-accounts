@@ -5,6 +5,6 @@ Django==3.2.6
 djangorestframework==3.12.4
 pytz==2021.1
 sqlparse==0.4.1
-djrest-wrapper==0.1.8
+djrest-wrapper==0.1.9
 drf-writable-nested==0.6.3
 PyJWT==2.1.0
