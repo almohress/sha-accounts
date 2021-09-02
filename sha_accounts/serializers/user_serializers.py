@@ -58,17 +58,46 @@ class UserSignInResponse(UserSignUpResponse):
 
 class UserListResponse(serializers.ModelSerializer):
     class Meta:
-        model=User
-        fields=['id','username','is_active','is_superuser']
+        model = User
+        fields = ['id', 'username', 'is_active', 'is_superuser']
 
 
 class UserUpdateRequest(WritableNestedModelSerializer):
     profile = ProfileSerializer()
+
     class Meta:
-        model=User
-        fields=['profile']
+        model = User
+        fields = ['profile']
 
 
 class UserUpdateResponse(UserSignUpResponse):
     class Meta(UserSignUpResponse.Meta):
         pass
+
+
+class UserChangePasswordRequest(serializers.ModelSerializer):
+    old_password = serializers.CharField(
+        write_only=True,
+        required=True,
+    )
+    new_password = serializers.CharField(
+        write_only=True,
+        required=True,
+    )
+
+    def change_password(self, id):
+        old_password = self.validated_data.get('old_password')
+        new_password = self.validated_data.get('new_password')
+        try:
+            user = self.Meta.model.objects.get(id=id)
+            if user.check_password(old_password):
+                user.set_password(new_password)
+                return True
+            else:
+                raise DoesNotExistsExp(f'Invalid Credentials')
+        except ObjectDoesNotExist as e:
+            raise DoesNotExistsExp(f'Invalid Credentials')
+
+    class Meta:
+        model = User
+        fields = ['new_password', 'old_password']
