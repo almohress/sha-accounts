@@ -53,6 +53,7 @@ class UserViewSet(BaseViewSet):
         return Response(data={model.__class__.__name__.lower(): resser.data}, status=HTTP_201_CREATED)
 
     @action(detail=False, methods=['POST'], url_name='signin', url_path='signin')
+    @serializer_validation
     def signin(self, request, *args, **kwargs):
         reqser = self.get_serializer(data=request.data)
         reqser.is_valid(raise_exception=True)
