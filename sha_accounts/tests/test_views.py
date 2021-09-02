@@ -165,6 +165,19 @@ class UserViewSetTestCase(APITestCase):
         except User.DoesNotExist:
             self.assertTrue(True)
 
+    def test_user_signout_view(self):
+        user=User.objects.create(username=f'test',email=f'test@example.com',password=f'test')
+        access_token=self._login('test','test').get('data').get('user').get('access_token')
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'{settings.SHA_ACCOUNTS.get("JWT_AUTH_RAELM")} {access_token}')
+        url=reverse('user-signout')
+        response=self.client.get(path=url)
+        self.assertEqual(response.status_code,status.HTTP_200_OK)
+        url=reverse('user-detail',args={user.id})
+        response=self.client.get(path=url)
+        self.assertEqual(response.status_code,status.HTTP_401_UNAUTHORIZED)
+
+
     def _login(self,username,password):
         data={
             'username':username,

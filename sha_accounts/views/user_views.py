@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from djrest_wrapper.interfaces import BaseViewSet
 from djrest_wrapper.decorators import serializer_validation
 from ..models.user_models import User
-from ..signals import user_logged_in
+from ..signals import user_logged_in, user_logged_out
 from ..serializers.user_serializers import UserSignUpRequest, UserSignUpResponse, UserSignInRequest, UserSignInResponse, UserListResponse, UserUpdateRequest, UserUpdateResponse
 from ..permissions import IsAuthenticatedAndOwner, IsAdmin
 
@@ -61,3 +61,8 @@ class UserViewSet(BaseViewSet):
         user.access_token = user_logged_in.send(sender=User, user=user)[0][1]
         resser = self.get_serializer_response()(user)
         return Response(data={user.__class__.__name__.lower(): resser.data})
+
+    @action(detail=False,methods=['GET'],url_name='signout', url_path='signout')
+    def signout(self,request,*args,**kwargs):
+        user_logged_out.send(sender=User,request=request)
+        return Response(data={})
