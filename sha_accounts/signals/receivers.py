@@ -25,3 +25,9 @@ def set_jwt_token(sender,user,**kwargs):
     token=JwtHelper.encode({'user':user_fields})
     caches['token-cache'].set(token, 0)
     return token
+
+
+@receiver(user_logged_out,sender=User)
+def delete_jwt_token(sender,request,**kwrargs):
+    token=request.headers.get('Authorization').split(' ')[1]
+    caches['token-cache'].delete(token)
