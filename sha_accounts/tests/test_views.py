@@ -88,3 +88,26 @@ class UserViewSetTestCase(APITestCase):
         self.assertEqual(response.json().get(
             'err_code'), errors.ERR_SUCCESSFUL)
         self.assertIsNotNone(response.json().get('data').get('user'))
+
+    def test_user_list_admin_view(self):
+        superuser = User.objects.create_superuser(
+            username='superuser', email='superuser@example.com', password='superuser')
+        url = reverse('user-signin')
+        data = {
+            'username': superuser.username,
+            'password': 'superuser'
+        }
+        response = self.client.post(path=url, data=data, format='json')
+
+        for i in range(12):
+            User.objects.create(username=f'test{i}',email=f'test{i}@example.com',password=f'test{i}')
+        url=reverse('user-list')
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'{settings.SHA_ACCOUNTS.get("JWT_AUTH_RAELM")} {response.json().get("data").get("user").get("access_token")}')
+        response=self.client.get(path=url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json().get('err'), False)
+        self.assertEqual(response.json().get(
+            'err_code'), errors.ERR_SUCCESSFUL)
+        self.assertIsNotNone(response.json().get('data').get('page'))
+        self.assertIsNotNone(response.json().get('data').get('users'))

@@ -5,12 +5,13 @@ from djrest_wrapper.interfaces import BaseViewSet
 from djrest_wrapper.decorators import serializer_validation
 from ..models.user_models import User
 from ..signals import user_logged_in
-from ..serializers.user_serializers import UserSignUpRequest, UserSignUpResponse, UserSignInRequest, UserSignInResponse
+from ..serializers.user_serializers import UserSignUpRequest, UserSignUpResponse, UserSignInRequest, UserSignInResponse, UserListResponse
 from ..permissions import IsAuthenticatedAndOwner, IsAdmin
 
 
 class UserViewSet(BaseViewSet):
     queryset = User.objects.all()
+    page_result_key='users'
     serializer_action_classes = {
         'create': {
             'req': UserSignUpRequest,
@@ -22,10 +23,14 @@ class UserViewSet(BaseViewSet):
         'signin': {
             'req': UserSignInRequest,
             'res': UserSignInResponse,
-        }
+        },
+        'list':{
+            'res':UserListResponse,
+        },
     }
     permission_action_classes = {
         'retrieve': [IsAuthenticatedAndOwner | IsAdmin],
+        'list': [IsAdmin],
     }
 
     @serializer_validation
