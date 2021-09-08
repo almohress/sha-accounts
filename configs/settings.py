@@ -26,6 +26,7 @@ THIRD_PARTIES = [
 
 LOCAL_APPS = [
     'sha_accounts',
+    'examples'
 ]
 
 INSTALLED_APPS = DJANGO_DEFAULT_APPS+THIRD_PARTIES+LOCAL_APPS
@@ -87,8 +88,9 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'djrest_wrapper.exceptions.handler.exception_handler',
     'DEFAULT_RENDERER_CLASSES': ['djrest_wrapper.renderers.defaultjson.DefaultJsonRenderer'],
     'DEFAULT_PAGINATION_CLASS': 'djrest_wrapper.paginations.default.DefaultPagination',
-    'DEFAULT_AUTHENTICATION_CLASSES': ['sha_accounts.backends.authentications.JwtAuthentication', ]
-}
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'sha_accounts.backends.authentications.JwtAuthentication',
+         ]}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -124,7 +126,7 @@ AUTH_USER_MODEL = 'sha_accounts.User'
 
 SHA_ACCOUNTS = {
     'DEFAULT_ACTIVATION': True,
-    'AUTH_USER_MODEL': 'User',
+    'AUTH_USER_PROFILE_MODEL': 'examples.ExampleProfile',
     'JWT_ACCESS_TOKEN_EXP': timedelta(days=1),
     'JWT_USER_ENCODED_FIELDS': ['id'],
     'JWT_AUTH_RAELM': 'sample_raelm'

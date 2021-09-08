@@ -4,8 +4,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from djrest_wrapper.exceptions.apis import errors
 from ..models.user_models import User
-from ..models.profile_models import Profile
-
+from ..models import get_user_profile_model
 
 class UserViewSetTestCase(APITestCase):
     def setUp(self):
@@ -182,7 +181,7 @@ class UserViewSetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         try:
             deleting_user = User.objects.get(username=f'test')
-            deleting_user_profile = Profile.objects.get(user=user)
+            deleting_user_profile = get_user_profile_model().objects.get(user=user)
             self.assertIsNone(deleting_user)
             self.assertIsNone(deleting_user_profile)
         except User.DoesNotExist:

@@ -1,7 +1,7 @@
 from django.test import TestCase
 from ..serializers.user_serializers import UserSignUpRequest, UserSignUpResponse
 from ..models.permission_models import Permission
-from ..models.profile_models import Profile
+from ..models import get_user_profile_model
 
 
 class UserSerializerTestCase(TestCase):
@@ -18,7 +18,7 @@ class UserSerializerTestCase(TestCase):
         serializer.is_valid(raise_exception=True)
         new_user = serializer.save()
         self.assertIsNotNone(new_user)
-        self.assertIsInstance(new_user.profile, Profile)
+        self.assertIsInstance(new_user.profile, get_user_profile_model())
         for permission in new_user.permissions.all():
             self.assertIsInstance(permission, Permission)
         return new_user
