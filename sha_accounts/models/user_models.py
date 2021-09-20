@@ -34,8 +34,8 @@ class AbstractUser(AbstractBaseUser, BaseModel):
     objects = UserManager()
 
     class Meta:
-        verbose_name = _('user')
-        verbose_name_plural = _('users')
+        verbose_name = 'user'
+        verbose_name_plural = 'users'
         abstract = True
 
     def __str__(self):
