@@ -7,6 +7,8 @@ class AbstractPermission(BaseModel):
 
     class Meta:
         abstract = True
+        verbose_name = 'permission'
+        verbose_name_plural = 'permissions'
 
 
 class Permission(AbstractPermission):
