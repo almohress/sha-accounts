@@ -5,13 +5,10 @@ from djrest_wrapper.exceptions import DuplicateModelExp
 
 class UserManager(BaseUserManager):
     def create(self, username, email, password, * args, **kwargs):
-        try:
-            new_user = super().create(username=username, email=email, *args, **kwargs)
-            new_user.set_password(password)
-            new_user.save(using=self._db)
-            return new_user
-        except IntegrityError as e:
-            raise DuplicateModelExp('user already exists')
+        new_user = super().create(username=username, email=email, *args, **kwargs)
+        new_user.set_password(password)
+        new_user.save(using=self._db)
+        return new_user
 
     def create_superuser(self, username, email, password):
         user = self.create(

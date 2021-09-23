@@ -25,6 +25,21 @@ class UserViewSetTestCase(APITestCase):
         self.assertIsNotNone(response.json().get(
             'data').get('user').get('access_token'))
 
+    def test_create_duplicate_user_view(self):
+        url = reverse('user-list')
+        data = {
+            'username': 'testuser',
+            'email': 'test@example.com',
+            'password': 'test'
+        }
+        User.objects.create(**data)
+        response = self.client.post(path=url, data=data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.json().get('err'), True)
+        self.assertEqual(response.json().get(
+            'err_code'), errors.ERR_DUPLICATE_MODEL)
+
+
     def test_signin_user_view(self):
         self.test_create_user_view()
         url = reverse('user-signin')
