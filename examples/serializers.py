@@ -9,7 +9,7 @@ class ExampleRelProfileSerializer(serializers.ModelSerializer):
 
 
 class ExampleProfileSerializer(serializers.ModelSerializer):
-    relprofile = ExampleRelProfileSerializer(many=True)
+    relprofile = ExampleRelProfileSerializer(required=False, many=True)
 
     class Meta:
         model = ExampleProfile

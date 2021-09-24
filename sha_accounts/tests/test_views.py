@@ -57,7 +57,7 @@ class UserViewSetTestCase(APITestCase):
             'data').get('user').get('profile'))
         self.assertIsNotNone(response.json().get('data').get(
             'user').get('profile').get('relprofile'))
-        
+
     def test_retrieve_user_profile_view_failed(self):
         user = self.test_signin_user_view()
         url = reverse('user-detail', args={user.get('id')})
