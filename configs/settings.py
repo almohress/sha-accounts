@@ -127,7 +127,8 @@ AUTH_USER_MODEL = 'sha_accounts.User'
 SHA_ACCOUNTS = {
     'DEFAULT_ACTIVATION': True,
     'AUTH_USER_PROFILE_MODEL': 'examples.ExampleProfile',
+    'AUTH_USER_PROFILE_SERIALIZER': 'examples.serializers.ExampleProfileSerializer',
     'JWT_ACCESS_TOKEN_EXP': timedelta(days=1),
     'JWT_USER_ENCODED_FIELDS': ['id'],
-    'JWT_AUTH_RAELM': 'sample_raelm'
+    'JWT_AUTH_RAELM': 'sample_raelm',
 }
