@@ -5,10 +5,13 @@ name: Run Tests
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - devel
   pull_request:
-    branches: [ main ]
-
+    branches:
+      - main
+      - devel
 jobs:
   build:
 
