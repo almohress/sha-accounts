@@ -1,4 +1,6 @@
 from django.contrib.auth.models import BaseUserManager
+from django.db import IntegrityError
+from djrest_wrapper.exceptions import DuplicateModelExp
 
 
 class UserManager(BaseUserManager):

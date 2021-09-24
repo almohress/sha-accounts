@@ -5,9 +5,9 @@ from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from ..models.user_models import User
 from .profile_serializers import ProfileSerializer
+from .base import BaseSerializer
 
-
-class UserSignUpRequest(serializers.ModelSerializer):
+class UserSignUpRequest(BaseSerializer):
     username = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
     password = serializers.CharField(
