@@ -118,4 +118,4 @@ media/
 # !**/migrations
 # !**/migrations/__init__.py
 **/migrations/*
-
+!sha_accounts/migrations/*
