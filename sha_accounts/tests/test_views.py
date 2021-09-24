@@ -6,6 +6,7 @@ from djrest_wrapper.exceptions.apis import errors
 from ..models.user_models import User
 from ..models import get_user_profile_model
 
+
 class UserViewSetTestCase(APITestCase):
     def setUp(self):
         pass
@@ -52,7 +53,11 @@ class UserViewSetTestCase(APITestCase):
         self.assertEqual(response.json().get(
             'err_code'), errors.ERR_SUCCESSFUL)
         self.assertIsNotNone(response.json().get('data').get('user'))
-
+        self.assertIsNotNone(response.json().get(
+            'data').get('user').get('profile'))
+        self.assertIsNotNone(response.json().get('data').get(
+            'user').get('profile').get('relprofile'))
+        
     def test_retrieve_user_profile_view_failed(self):
         user = self.test_signin_user_view()
         url = reverse('user-detail', args={user.get('id')})
